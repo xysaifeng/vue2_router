@@ -1,76 +1,95 @@
+/**
+ * 滚动行为的使用
+ */
+
 // import Vue from 'vue'
 import Vue from 'vue/dist/vue.esm.js'
 import VueRouter from 'vue-router'
 
-// import Home from '../views/Home.vue'
-// import PropData from '../components/props-data/PropsData'
-
-// redirect的使用
+// import InnerComponentGuard from '../components/Guard';
+// import Home from '../components/Home';
 
 Vue.use(VueRouter)
 
-const Home = { template: '<router-view></router-view>' }
-const Default = { template: '<h3>default</h3>' }
-const Foo = { template: '<h3>foo111</h3>' }
-const Bar = { template: '<h3>bar-bar</h3>' }
-const Baz = { template: '<h3>baz</h3>' }
-const WithParams = { template: '<h3>{{ $route.params.id }}</h3>' }
-const Foobar = { template: '<h3>foobar</h3>' }
-const FooBar = { template: '<h3>FooBar</h3>' }
+const Home = { template: '<div class="home">home</div>' }
+const Foo = { template: '<div class="foo">foo</div>' }
+const Bar = {
+  template: `
+    <div class="bar">
+      bar
+      <div style="height:1500px"></div>
+      <p id="anchor" style="height:500px">Anchor</p>
+      <p id="anchor2" style="height:500px">Anchor2</p>
+      <p id="1number">with number</p>
+    </div>
+  `
+}
 
-const routes = [
-  { path: '/', component: Home,
-      children: [
-        { path: '', component: Default },
-        { path: 'foo', component: Foo },
-        { path: 'bar', component: Bar },
-        { path: 'baz', name: 'baz', component: Baz },
-        { path: 'with-params/:id', component: WithParams },
-        // relative redirect to a sibling route
-        { path: 'relative-redirect', redirect: 'foo' }
-      ]
-    },
-    // absolute redirect
-    { path: '/absolute-redirect', redirect: '/bar' },
-    // dynamic redirect, note that the target route `to` is available for the redirect function
-    { path: '/dynamic-redirect/:id?',
-      redirect: to => {
-        const { hash, params, query } = to
-        if (query.to === 'foo') {
-          return { path: '/foo', query: null }
-        }
-        if (hash === '#baz') {
-          return { name: 'baz', hash: '' }
-        }
-        if (params.id) {
-          console.log(params.id, '------/dynamic-redirect/');
-          return '/with-params/:id'
-        } else {
-          return '/bar'
-        }
+const scrollBehavior = function (to, from, savedPosition) {
+  console.log('savedPosition: --------', savedPosition);
+  if (savedPosition) {
+    // savedPosition is only available for popstate navigations.
+    return savedPosition
+  } else {
+    const position = {}
+
+    // scroll to anchor by returning the selector
+    if (to.hash) {
+      console.log(to, '------to');
+      // position.offset = { y: 10 }
+      position.selector = to.hash
+
+      // specify offset of the element
+      if (to.hash === '#anchor2') {
+        position.offset = { y: 350 }
       }
-    },
-    // named redirect
-    { path: '/named-redirect', redirect: { name: 'baz' }},
 
-    // redirect with params
-    { path: '/redirect-with-params/:id', redirect: '/with-params/:id' },
+      // bypass #1number check
+      if (/^#\d/.test(to.hash) || document.querySelector(to.hash)) {
+        console.log(position, 'position');
+        return position
+      }
 
-    // redirect with caseSensitive
-    { path: '/foobar', component: Foobar, caseSensitive: true },
+      // if the returned position is falsy or an empty object,
+      // will retain current scroll position.
+      return false
+    }
 
-    // redirect with pathToRegexpOptions
-    { path: '/FooBar', component: FooBar, pathToRegexpOptions: { sensitive: true }},
+    console.log('------没有hash');
 
-    // catch all redirect
-    { path: '*', redirect: '/' }
+    return new Promise(resolve => {
+      console.log(JSON.stringify(position), '-------position1');
+      // check if any matched route config has meta that requires scrolling to top
+      if (to.matched.some(m => m.meta.scrollToTop)) {
+        // coords will be used if no selector is provided,
+        // or if the selector didn't match any element.
+        position.x = 0
+        position.y = 0
+      }
+
+      // wait for the out transition to complete (if necessary)
+      this.app.$root.$once('triggerScroll', () => {
+        console.log(this, position, '------路由中的 this');
+        // if the resolved position is falsy or an empty object,
+        // will retain current scroll position.
+        resolve(position)
+      })
+    })
+  }
+}
+const routes = [
+  { path: '/', component: Home, meta: { scrollToTop: true } },
+  { path: '/foo', component: Foo },
+  { path: '/bar', component: Bar, meta: { scrollToTop: true } }
 ]
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  // base: process.env.BASE_URL,
+  base: __dirname,
   routes: routes,
-  linkActiveClass: 'linkActiveClass' // 全局配置active-class
+  // linkActiveClass: 'linkActiveClass', // 全局配置active-class
+  scrollBehavior
 })
 console.log(router, '----router');
 export default router
