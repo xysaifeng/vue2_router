@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <h1>自定义指令</h1>
-    <ul class="nav">
-        <li><router-link to="/">/home</router-link></li>
-        <li><router-link to="/slot">/slot</router-link></li>
-        <li><router-link to="/jsx">/Jsx</router-link></li>
-        <li><router-link to="/renderFn">/renderFn</router-link></li>
+    <h1>滚动行为使用方式 scroll behavior</h1>
+    <ul>
+        <li><router-link to="/">/</router-link></li>
+        <li><router-link to="/foo">/foo</router-link></li>
+        <li><router-link to="/bar">/bar</router-link></li>
+        <li><router-link to="/bar#anchor">/bar#anchor</router-link></li>
+        <li><router-link to="/bar#anchor2">/bar#anchor2</router-link></li>
+        <li><router-link to="/bar#1number">/bar#1number</router-link></li>
       </ul>
     <transition name="fade" mode="out-in" @after-leave="afterLeave">
        <router-view class="view"></router-view>
@@ -25,7 +27,7 @@ export default {
         this.$router.push({path: '/people', query: {age: 'jack'}})
       },
       afterLeave () {
-        // console.log(this, '--------组件this');
+        console.log(this, '--------组件this');
         this.$root.$emit('triggerScroll')
       }
     }
@@ -39,22 +41,11 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  .nav {
-    margin: 0;
-    list-style: none;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    li {
-      padding:  0 20px;
-      // list-style: none;
-    }
-  }
 }
 
 #nav {
   padding: 30px;
+
   a {
     font-weight: bold;
     color: #2c3e50;

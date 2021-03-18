@@ -1,0 +1,16 @@
+.obj {
+    border: 1px solid deeppink;
+    .pa {
+        color: deepskyblue;
+    }
+}
+
+.wrapper {
+    &.add {
+        background-color: dimgray;
+    }
+    color: red;
+    .pp {
+        color: #000;
+    }
+}
