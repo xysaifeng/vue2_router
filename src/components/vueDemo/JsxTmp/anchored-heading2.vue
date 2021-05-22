@@ -47,7 +47,7 @@ export default{
     },
     render(h) {
         return (
-          h('div', new Array(4).fill().map( _ => h('p', 'hi')))
+          h('div', new Array(4).fill().map( () => h('p', 'hi')))
         )
     }
 }

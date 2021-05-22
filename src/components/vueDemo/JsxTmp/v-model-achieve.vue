@@ -39,7 +39,7 @@ export default {
   },
     // vOn:click={this.newTodoText}
     // {...{ on: { click: item => this.$emit('click', item), 'update:openKeys': val => { this.localOpenKeys = val } } }}
-  render(h) {
+  render() {
     //   ok
     //   return <input type="text" vOn:input={this.handleClick} value={this.value}/>
     // v-model

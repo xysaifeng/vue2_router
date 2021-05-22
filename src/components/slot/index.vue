@@ -2,7 +2,7 @@
   <div>
       <slotc>
           <!-- sub -->
-        <template #header>
+        <template v-slot:header>
             <h3>this is header</h3>
         </template>
         <!-- <template v-slot:header> 重复了

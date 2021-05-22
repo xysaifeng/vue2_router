@@ -1,9 +1,9 @@
 <script>
-import anchoredUsed from "./anchoredUsed";
+// import anchoredUsed from "./anchoredUsed";
 
-async function fn() {
-  return Promise.resolve("h2");
-}
+// async function fn() {
+//   return Promise.resolve("h2");
+// }
 
 export default {
   props: {
