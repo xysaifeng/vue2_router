@@ -2,34 +2,37 @@
   <div id="app">
     <h1>自定义指令</h1>
     <ul class="nav">
-        <li><router-link to="/">/home</router-link></li>
-        <li><router-link to="/slot">/slot</router-link></li>
-        <li><router-link to="/jsx">/Jsx</router-link></li>
-        <li><router-link to="/renderFn">/renderFn</router-link></li>
-      </ul>
+      <li><router-link to="/">/home</router-link></li>
+      <li><router-link to="/slot">/slot</router-link></li>
+      <li><router-link to="/jsx">/Jsx</router-link></li>
+      <li><router-link to="/renderFn">/renderFn</router-link></li>
+    </ul>
     <transition name="fade" mode="out-in" @after-leave="afterLeave">
-       <router-view class="view"></router-view>
+      <router-view class="view"></router-view>
     </transition>
   </div>
 </template>
 
 <script>
 export default {
-    name: 'app',
-    
-    methods: {
-      go() {
-        this.$router.push({name: 'About', params: {name: 'tom'}})
-      },
-      goPeople() {
-        this.$router.push({path: '/people', query: {age: 'jack'}})
-      },
-      afterLeave () {
-        // console.log(this, '--------组件this');
-        this.$root.$emit('triggerScroll')
-      }
-    }
-}
+  name: "app",
+  mounted() {
+    var s = 1;
+  },
+
+  methods: {
+    go() {
+      this.$router.push({ name: "About", params: { name: "tom" } });
+    },
+    goPeople() {
+      this.$router.push({ path: "/people", query: { age: "jack" } });
+    },
+    afterLeave() {
+      // console.log(this, '--------组件this');
+      this.$root.$emit("triggerScroll");
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -47,7 +50,7 @@ export default {
     align-items: center;
     justify-content: center;
     li {
-      padding:  0 20px;
+      padding: 0 20px;
       // list-style: none;
     }
   }
