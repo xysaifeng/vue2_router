@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lint:create": "eslint --init"
+    "lint:create": "eslint --init",
+    "prepare": "husky install"
   },
   "dependencies": {
     "ant-design-vue": "^1.7.4",
@@ -37,15 +38,11 @@
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,vue}": [
       "eslint --fix",
       "git add"
-    ]
+    ],
+    "*.js": "eslint --cache --fix"
   }
 }
