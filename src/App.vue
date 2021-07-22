@@ -17,7 +17,7 @@
 export default {
   name: "app",
   mounted() {
-    var ss = 1;
+    // var ss = 1;
   },
 
   methods: {
